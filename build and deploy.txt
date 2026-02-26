@@ -1,0 +1,47 @@
+npm run build
+npm run deploy
+
+Gunaone@DESKTOP-H6V8LFE MINGW64 /c/Project/vue-vite-mqtt (main)
+$ git add .
+warning: in the working copy of 'src/App.vue', LF will be replaced by CRLF the next time Git touches it
+
+Gunaone@DESKTOP-H6V8LFE MINGW64 /c/Project/vue-vite-mqtt (main)
+$ git commit -m "update feature"
+[main a3f444a] update feature
+ 2 files changed, 112 insertions(+), 25 deletions(-)
+
+ Gunaone@DESKTOP-H6V8LFE MINGW64 /c/Project/vue-vite-mqtt (main)
+$ git push
+Enumerating objects: 11, done.
+Counting objects: 100% (11/11), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (5/5), done.
+Writing objects: 100% (6/6), 1.44 KiB | 739.00 KiB/s, done.
+Total 6 (delta 3), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (3/3), completed with 3 local objects.
+To https://github.com/Gunawanplc/vue-vite-mqtt.git
+   e335fd5..a3f444a  main -> main
+
+Gunaone@DESKTOP-H6V8LFE MINGW64 /c/Project/vue-vite-mqtt (main)
+$ npm run build
+
+> vue-vite-mqtt@0.0.0 build
+> vite build
+
+vite v7.3.1 building client environment for production...
+✓ 34 modules transformed.
+dist/index.html                   0.59 kB │ gzip:   0.36 kB
+dist/assets/index-D3QNkVKS.css    0.60 kB │ gzip:   0.34 kB
+dist/assets/index-BnSrCH7V.js   454.39 kB │ gzip: 145.07 kB
+✓ built in 2.34s
+
+Gunaone@DESKTOP-H6V8LFE MINGW64 /c/Project/vue-vite-mqtt (main)
+$ npm run deploy
+
+> vue-vite-mqtt@0.0.0 deploy
+> gh-pages -d dist
+
+Published
+
+git add .;git commit -m "update feature";git push;
+ npm run build;npm run deploy

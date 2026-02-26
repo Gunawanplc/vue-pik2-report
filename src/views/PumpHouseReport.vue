@@ -105,29 +105,16 @@ function exportPDF() {
 
 </script>
 
-<!-- <template>
-  <div class="page">
-    <h2>Home</h2>
-
-    <p>Status:
-      <b :style="{ color: isConnected ? 'green' : 'red' }">
-        {{ isConnected ? 'CONNECTED' : 'DISCONNECTED' }}
-      </b>
-    </p>
-
-    <div class="page">
-      <PikDailyReportTabulator :rows="rows" />
-    </div>
-
-    
-  
-  </div>
-</template> -->
 
   <template>
     <div class="page container-fluid">
 
-      <h4 class="mb-3">Pump Report</h4>
+      <div class="d-flex align-bottom">
+        <h4 class="mb-3">Water Gate Report - </h4> &nbsp
+        <span><h6 class="mb-3 pt-2">Status : <b :style="{ color: isConnected ? 'green' : 'red' }">
+          {{ isConnected ? "CONNECTED" : "DISCONNECTED" }}
+         </b></h6></span>
+      </div>
 
       <!-- FILTER CARD -->
       <div class="card mb-3 shadow-sm">

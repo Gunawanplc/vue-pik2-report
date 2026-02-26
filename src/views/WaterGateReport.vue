@@ -105,30 +105,15 @@ function exportPDF() {
 
 </script>
 
-<!-- <template>
-  <div class="page">
-    <h2>Home</h2>
-
-    <p>Status:
-      <b :style="{ color: isConnected ? 'green' : 'red' }">
-        {{ isConnected ? 'CONNECTED' : 'DISCONNECTED' }}
-      </b>
-    </p>
-
-    <div class="page">
-      <PikDailyReportTabulator :rows="rows" />
-    </div>
-
-    
-  
-  </div>
-</template> -->
-
   <template>
     <div class="page container-fluid">
 
-      <h4 class="mb-3">Pump Report</h4>
-
+      <div class="d-flex align-bottom">
+        <h4 class="mb-3">Water Gate Report - </h4> &nbsp
+        <span><h6 class="mb-3 pt-2">Status : <b :style="{ color: isConnected ? 'green' : 'red' }">
+          {{ isConnected ? "CONNECTED" : "DISCONNECTED" }}
+         </b></h6></span>
+      </div>
       <!-- FILTER CARD -->
       <div class="card mb-3 shadow-sm">
         <div class="card-body">
@@ -150,31 +135,8 @@ function exportPDF() {
                     class="form-control form-control-sm"/>
             </div>
 
-            <!-- Station -->
-            <div class="col-md-2">
-              <label class="form-label fw-bold">Station</label>
-              <select v-model="station"
-                      class="form-select form-select-sm">
-                <option value="">All</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-              </select>
-            </div>
-             <!-- Pump -->
-             <div class="col-md-2">
-              <label class="form-label fw-bold">Pump</label>
-              <select v-model="pump"
-                      class="form-select form-select-sm">
-                <option value="">All</option>
-                <option value="1">Pump1</option>
-                <option value="2">Pump2</option>
-                <option value="3">Pump3</option>
-                <option value="4">Pump4</option>
-                <option value="4">Pump5</option>
-              </select>
-            </div>
+
+
 
             <!-- Buttons -->
             <div class="col-md-4">

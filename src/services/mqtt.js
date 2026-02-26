@@ -31,15 +31,17 @@ export function useMqtt() {
       clientId: clientId,
       username: 'Gunaone',
       password: 'Gunaone123*',
-
-      // clientId: 'bebas_yang_penting_unik_12345',
-      // path: '/mqtt', // Beberapa provider butuh ini ditegaskan
-
-      keepalive: 20,
-      reconnectPeriod: 0,
-      // keepalive: 10,          // lebih agresif
-      // reconnectPeriod: 5000,  // lebih lambat
+      keepalive: 30,
+      reconnectPeriod: 3000,
+      connectTimeout: 4000,
       clean: true,
+      // untuk mobile
+      // keepalive: 20,
+      // reconnectPeriod: 0,
+      // keepalive: 0,          // 🔥 PENTING
+      // reconnectPeriod: 0,    // ❌ jangan reconnect
+      // connectTimeout: 4000
+      // clean: true,
     })
 
     // wss://gfa7b90f.ala.asia-southeast1.emqxsl.com:8084/mqtt
@@ -66,7 +68,7 @@ export function useMqtt() {
       // client.subscribe('demo/vue/mqtt')
       client.subscribe('location/updates')
       addLog('MQTT CONNECTED at ' + lastOpenTime.toLocaleDateString("Fr-CA") +" "+lastOpenTime.toLocaleTimeString("Fr-fr"))
-      startHeartbeat()        // 🔑 TAMBAH
+      // startHeartbeat()        // 🔑 TAMBAH
     })
 
     client.on('message', (topic, payload) => {
@@ -90,23 +92,24 @@ export function useMqtt() {
       lastCloseTime = new Date()
       isConnected.value = false
       addLog('MQTT CLOSED at ' + lastCloseTime.toLocaleDateString("Fr-CA") +" "+ lastCloseTime.toLocaleTimeString("Fr-fr"))
-      stopHeartbeat()         // 🔑 TAMBAH
+      // stopHeartbeat()         // 🔑 TAMBAH
     })
 
     client.on('error', () => {
-      isConnected.value = false
+      // isConnected.value = false
       addLog('MQTT ERROR')
-      startHeartbeat()        // 🔑 TAMBAH
-      client?.end(true)
-      client = null
+      // startHeartbeat()        // 🔑 TAMBAH
     })
   }
 
   function forceReconnect() {
+    if (isConnected.value) return 
     if (!navigator.onLine) {
       addLog('Reconnect skipped (offline)')
       return
     }
+
+     addLog('Force reconnect...')
 
     if (Date.now() - lastCloseTime < 3000) {
       addLog('Reconnect delayed (broker cooldown)')
@@ -139,9 +142,8 @@ export function useMqtt() {
         forceReconnect()
         return
       }
-
+      // client.publish('ping/mobile', '1')
       // publish ringan
-      client.publish('ping/mobile', '1')
     }, 15000)
   }
 
@@ -164,162 +166,3 @@ export function useMqtt() {
 
 
 
-// import mqtt from 'mqtt'
-
-// let client = null
-
-// export function connectMQTT() {
-//   if (client && client.connected) return
-
-//   client = mqtt.connect('wss://ecb3e42f2534425cad2b77476a1d9435.s1.eu.hivemq.cloud:8884/mqtt', {
-//     keepalive: 20,
-//     reconnectPeriod: 0,     // ❗ matikan auto reconnect bawaan
-//     connectTimeout: 10000,
-//     clean: true,
-//     resubscribe: true,
-//   })
-
-//   client.on('connect', () => {
-//     console.log('MQTT CONNECTED')
-//   })
-
-//   client.on('close', () => {
-//     console.log('MQTT CLOSED')
-//   })
-
-//   client.on('error', (err) => {
-//     console.log('MQTT ERROR', err)
-//     client.end(true)
-//   })
-// }
-
-
-
-// import mqtt from 'mqtt'
-// import { ref } from 'vue'
-
-// const isConnected = ref(false)
-// const lastMessage = ref(null)
-
-// let client = null
-
-// export function useMqtt() {
-
-//   const connect = () => {
-//     if (client?.connected) return
-
-//     client = mqtt.connect('wss://broker.hivemq.com:8884/mqtt', {
-//       clientId: 'vue_' + Math.random().toString(16).slice(2),
-//       keepalive: 30,           // 🔴 WAJIB kecil di mobile
-//       reconnectPeriod: 2000,   // reconnect agresif
-//       connectTimeout: 4000,
-//       clean: true
-//     })
-
-//     client.on('connect', () => {
-//       console.log('MQTT connected')
-//       isConnected.value = true
-//       client.subscribe('demo/vue/mqtt', { qos: 0 })
-//     })
-
-//     client.on('message', (topic, payload) => {
-//       lastMessage.value = {
-//         topic,
-//         data: safeParse(payload),
-//         time: new Date().toLocaleTimeString()
-//       }
-//     })
-
-//     client.on('reconnect', () => {
-//       console.log('MQTT reconnecting...')
-//       isConnected.value = false
-//     })
-
-//     client.on('close', () => {
-//       console.log('MQTT closed')
-//       isConnected.value = false
-//     })
-
-//     client.on('error', err => {
-//       console.error('MQTT error', err)
-//       isConnected.value = false
-//       client?.end(true)
-//       client = null
-//     })
-//   }
-
-//   const disconnect = () => {
-//     client?.end(true)
-//     client = null
-//     isConnected.value = false
-//   }
-
-//   return { connect, disconnect, isConnected, lastMessage }
-// }
-
-// function safeParse(payload) {
-//   try {
-//     return JSON.parse(payload.toString())
-//   } catch {
-//     return payload.toString()
-//   }
-// }
-
-
-// import mqtt from 'mqtt'
-// import { ref } from 'vue'
-
-// const isConnected = ref(false)
-// const lastMessage = ref(null)
-
-// let client = null
-
-// export function useMqtt() {
-//   const connect = () => {
-//     if (client) return
-
-//     client = mqtt.connect('wss://broker.hivemq.com:8884/mqtt', {
-//       clientId: 'vue_vite_' + Math.random().toString(16).slice(2),
-//       keepalive: 60,
-//       reconnectPeriod: 1000,
-//       clean: true
-//     })
-
-//     client.on('connect', () => {
-//       isConnected.value = true
-//       client.subscribe('demo/vue/mqtt')
-//     })
-
-//     client.on('message', (topic, payload) => {
-//       try {
-//         lastMessage.value = {
-//           topic,
-//           data: JSON.parse(payload.toString()),
-//           time: new Date().toLocaleTimeString()
-//         }
-//       } catch {
-//         lastMessage.value = {
-//           topic,
-//           data: payload.toString(),
-//           time: new Date().toLocaleTimeString()
-//         }
-//       }
-//     })
-
-//     client.on('close', () => {
-//       isConnected.value = false
-//     })
-//   }
-
-//   const disconnect = () => {
-//     client?.end()
-//     client = null
-//   }
-
-//   return {
-//     connect,
-//     disconnect,
-//     isConnected,
-//     lastMessage
-//   }
-// }

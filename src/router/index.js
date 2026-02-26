@@ -3,10 +3,12 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Parameter from '../views/Parameter.vue'
 import Setting from '../views/Setting.vue'
+import PumpHouseReport from '../views/PumpHouseReport.vue'
+import WaterGateReport from '../views/WaterGateReport.vue'
 
 const routes = [
-  { path: '/', name: 'home', component: Home },
-  { path: '/parameter', name: 'parameter', component: Parameter },
+  { path: '/', name: 'pumphousereport', component: PumpHouseReport },
+  { path: '/watergatereport', name: 'watergatereport', component: WaterGateReport },
   { path: '/setting', name: 'setting', component: Setting }
 ]
 

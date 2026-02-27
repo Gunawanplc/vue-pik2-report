@@ -4,13 +4,21 @@
     <meta charset="utf-8">
     <title>vue-vite-mqtt</title>
     <script type="text/javascript">
-      // Trik untuk menangani Single Page App (SPA) di GitHub Pages
-      // Ini akan mengambil URL yang "error" dan mengarahkannya kembali ke index.html
-      // agar Vue Router bisa membacanya.
-      var pathSegment = window.location.pathname.split('/')[1];
-      window.history.replaceState(null, null, '/' + pathSegment + '/');
+      // 1. Ambil URL saat ini
+      var path = window.location.pathname;
+      
+      // 2. Cek apakah kita di GitHub (punya sub-folder)
+      // Jika URL mengandung 'vue-pik2-report', kita arahkan kembali ke situ
+      if (path.includes('/vue-pik2-report/')) {
+        // Simpan sisa path setelah nama repo (misal: 'setting')
+        var segment = path.split('/vue-pik2-report/')[1];
+        // Arahkan kembali ke root repo dengan menyertakan sisa path tadi
+        window.location.replace('/vue-pik2-report/#' + (segment || ''));
+      } else {
+        // Jika di lokal/Nginx, langsung balik ke root
+        window.location.replace('/');
+      }
     </script>
-    <meta http-equiv="refresh" content="0; URL='./'" />
   </head>
   <body>
     Redirecting...
